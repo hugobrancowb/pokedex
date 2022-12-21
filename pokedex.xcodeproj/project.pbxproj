@@ -94,6 +94,9 @@
 		037ED6B32952926400044B0C /* pokedex */ = {
 			isa = PBXGroup;
 			children = (
+				037ED6E0295299DF00044B0C /* ViewModel */,
+				037ED6DF295299D600044B0C /* Model */,
+				037ED6DE295299CE00044B0C /* View */,
 				037ED6B42952926400044B0C /* pokedexApp.swift */,
 				037ED6B62952926400044B0C /* ContentView.swift */,
 				037ED6B82952926600044B0C /* Assets.xcassets */,
@@ -125,6 +128,27 @@
 				037ED6D12952926600044B0C /* pokedexUITestsLaunchTests.swift */,
 			);
 			path = pokedexUITests;
+			sourceTree = "<group>";
+		};
+		037ED6DE295299CE00044B0C /* View */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		037ED6DF295299D600044B0C /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		037ED6E0295299DF00044B0C /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ViewModel;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
