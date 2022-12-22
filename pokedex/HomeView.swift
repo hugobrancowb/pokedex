@@ -41,7 +41,7 @@ struct HomeView: View {
             .padding(.horizontal, 8)
 
             ZStack {
-            RoundedRectangle(cornerRadius: 8)
+            RoundedRectangle(cornerRadius: 0)
               .foregroundColor(Color("type-fire"))
               .frame(height: 24)
 
@@ -50,6 +50,7 @@ struct HomeView: View {
               .foregroundColor(.white)
             }
           }
+          .cornerRadius(8)
         }
         .frame(width: 100, height: 100, alignment: .center)
         .aspectRatio(1, contentMode: .fit)
