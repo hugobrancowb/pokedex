@@ -10,13 +10,15 @@ import SwiftUI
 struct HomeView: View {
   @State var searchQuery = ""
 
+  @StateObject var viewModel = HomeViewModel()
+
   var body: some View {
     NavigationView {
       ScrollView {
         // MARK: Grid of PokeCard
         LazyVGrid(columns: [GridItem(), GridItem(), GridItem()], spacing: 16) {
-          ForEach(0 ..< 12) { item in
-            PokemonMiniCard()
+          ForEach(viewModel.results, id: \.name) { item in
+            PokemonMiniCard(name: item.name)
           }
         }
       }
@@ -26,7 +28,11 @@ struct HomeView: View {
       .background(.background)
     }
     .searchable(text: $searchQuery, prompt: "Search")
+    .onAppear {
+      viewModel.search()
+    }
   }
+
 }
 
 struct HomeView_Previews: PreviewProvider {

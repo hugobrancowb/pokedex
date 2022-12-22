@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct PokemonMiniCard: View {
+  let name: String
+
   var body: some View {
     ZStack {
       RoundedRectangle(cornerRadius: 8)
@@ -38,7 +40,7 @@ struct PokemonMiniCard: View {
             .foregroundColor(Color("type-fire"))
             .frame(height: 24)
 
-          Text("Charmander")
+          Text(name)
             .font(.pokereg(size: 10))
             .foregroundColor(.white)
         }
@@ -46,11 +48,5 @@ struct PokemonMiniCard: View {
       .cornerRadius(8)
     }
     .aspectRatio(1, contentMode: .fit)
-  }
-}
-
-struct PokemonMiniCard_Previews: PreviewProvider {
-  static var previews: some View {
-    PokemonMiniCard()
   }
 }
