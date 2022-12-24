@@ -8,33 +8,39 @@
 import Foundation
 
 class HomeViewModel: ObservableObject {
-  @Published var results: [PokemonSearchResult] = []
+  @Published var results: [PokemonCompactModel] = []
 
   @Published var error: Bool = false
 
   // Next page's url.
   var nextPage: String?
 
+  // Pokemon quantity fetched per request
   let limit: Int = 50
+
+  // current page for fetching data
   var page: Int = 0
 
-  // TODO: add annotation only service function
-  @MainActor func search(query: String? = nil, loadMore: Bool = false) async -> Void {
+  func search(query: String? = nil, loadMore: Bool = false) async -> Void {
     if !loadMore { page = 0 }
 
     do {
-      let results = try await Service.search(limit: limit, offset: limit * page)
-      error = false
+      try await Service.search(limit: limit, offset: limit * page) { results in
+        DispatchQueue.main.async {
+          switch results {
+          case .success(let results):
+            if loadMore { self.results += results } else { self.results = results }
 
-      if loadMore {
-        self.results += results
-      } else {
-        self.results = results
+            self.page += 1
+            self.error = false
+
+          case .failure:
+            self.error = true
+          }
+        }
       }
-
-      page += 1
     } catch {
-      self.error = true
+      DispatchQueue.main.async { self.error = true }
     }
   }
 }

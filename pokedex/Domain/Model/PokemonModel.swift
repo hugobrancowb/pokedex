@@ -6,9 +6,10 @@
 //
 
 import Foundation
+import SwiftUI
 
 struct PokemonCompactModel: Identifiable, Codable {
-  let id: String
+  let id: Int
   let name: String
   let sprites: SpriteModel
   let types: [PokemonTypeModel]
@@ -30,7 +31,28 @@ struct PokemonTypeModel: Codable {
 }
 
 enum PokemonType: String, Codable {
-  case grass = "grass"
-  case fire = "fire"
-  case water = "water"
+  case bug
+  case dark
+  case dragon
+  case electric
+  case fairy
+  case fighting
+  case fire
+  case flying
+  case ghost
+  case grass
+  case ground
+  case ice
+  case normal
+  case poison
+  case psychic
+  case rock
+  case steel
+  case water
+}
+
+extension PokemonType {
+  func getColor() -> Color {
+    return Color("type-\(self)")
+  }
 }

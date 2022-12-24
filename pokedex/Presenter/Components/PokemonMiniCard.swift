@@ -8,8 +8,20 @@
 import SwiftUI
 
 struct PokemonMiniCard: View {
-  let name: String
-
+  let pokemon: PokemonCompactModel
+  
+  var hashId: String {
+    let number = pokemon.id.description
+    return "#"
+      .appending(repeatElement("0", count: 3 - number.count).joined())
+      .appending(number)
+  }
+  
+  var typeColor: Color {
+    guard let type = pokemon.types.first else { return Color.gray }
+    return type.type.name.getColor()
+  }
+  
   var body: some View {
     ZStack {
       RoundedRectangle(cornerRadius: 8)
@@ -17,16 +29,16 @@ struct PokemonMiniCard: View {
         .foregroundColor(.white)
         .overlay {
           RoundedRectangle(cornerRadius: 8)
-            .strokeBorder(Color("type-fire"), lineWidth: 1)
+            .strokeBorder(typeColor, lineWidth: 1)
         }
-
+      
       VStack {
         ZStack(alignment: .topTrailing) {
-          Text("#001")
+          Text(hashId)
             .font(.pokereg(size: 8))
-            .foregroundColor(Color("type-fire"))
+            .foregroundColor(typeColor)
             .frame(maxWidth: .infinity, alignment: .trailing)
-
+          
           // TODO: swap for async image with cache and shimmer as fallback
           Image("Pokeball")
             .resizable()
@@ -35,13 +47,13 @@ struct PokemonMiniCard: View {
         }
         .padding(.top, 8)
         .padding(.horizontal, 8)
-
+        
         ZStack {
           RoundedRectangle(cornerRadius: 0)
-            .foregroundColor(Color("type-fire"))
+            .foregroundColor(typeColor)
             .frame(height: 24)
-
-          Text(name)
+          
+          Text(pokemon.name)
             .font(.pokereg(size: 10))
             .foregroundColor(.white)
         }

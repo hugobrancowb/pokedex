@@ -236,6 +236,8 @@
 			dependencies = (
 			);
 			name = pokedex;
+			packageProductDependencies = (
+			);
 			productName = pokedex;
 			productReference = 037ED6B12952926400044B0C /* pokedex.app */;
 			productType = "com.apple.product-type.application";
@@ -308,6 +310,9 @@
 				Base,
 			);
 			mainGroup = 037ED6A82952926400044B0C;
+			packageReferences = (
+				03543D7F2956961A0037DED7 /* XCRemoteSwiftPackageReference "PromiseQ" */,
+			);
 			productRefGroup = 037ED6B22952926400044B0C /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -687,6 +692,17 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		03543D7F2956961A0037DED7 /* XCRemoteSwiftPackageReference "PromiseQ" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "git@github.com:ikhvorost/PromiseQ.git";
+			requirement = {
+				kind = exactVersion;
+				version = 1.7.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
 	};
 	rootObject = 037ED6A92952926400044B0C /* Project object */;
 }
