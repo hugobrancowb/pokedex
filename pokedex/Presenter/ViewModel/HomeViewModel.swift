@@ -10,31 +10,31 @@ import Foundation
 class HomeViewModel: ObservableObject {
   @Published var results: [PokemonSearchResult] = []
 
+  @Published var error: Bool = false
+
   // Next page's url.
   var nextPage: String?
 
-  func search(query: String? = nil) {
-    print("starting request")
-    guard let url = URL(string: "https://pokeapi.co/api/v2/pokemon?limit=50&offset=0") else { return }
+  let limit: Int = 50
+  var page: Int = 0
 
-    let task = URLSession.shared.dataTask(with: url) { [weak self] data, _, error in
-      guard let data = data, error == nil else { return }
+  // TODO: add annotation only service function
+  @MainActor func search(query: String? = nil, loadMore: Bool = false) async -> Void {
+    if !loadMore { page = 0 }
 
-      do {
-        let results = try JSONDecoder().decode(PokemonSearchResultList.self, from: data)
+    do {
+      let results = try await Service.search(limit: limit, offset: limit * page)
+      error = false
 
-        DispatchQueue.main.async {
-          self?.nextPage = results.next
-          self?.results = results.results
-
-          print("request finished")
-        }
+      if loadMore {
+        self.results += results
+      } else {
+        self.results = results
       }
-      catch {
-        print("erro na busca")
-      }
+
+      page += 1
+    } catch {
+      self.error = true
     }
-
-    task.resume()
   }
 }

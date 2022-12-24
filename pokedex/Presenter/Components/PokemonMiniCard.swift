@@ -27,6 +27,7 @@ struct PokemonMiniCard: View {
             .foregroundColor(Color("type-fire"))
             .frame(maxWidth: .infinity, alignment: .trailing)
 
+          // TODO: swap for async image with cache and shimmer as fallback
           Image("Pokeball")
             .resizable()
             .aspectRatio(1, contentMode: .fit)

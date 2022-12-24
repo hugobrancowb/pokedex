@@ -19,6 +19,12 @@ struct HomeView: View {
         LazyVGrid(columns: [GridItem(), GridItem(), GridItem()], spacing: 16) {
           ForEach(viewModel.results, id: \.name) { item in
             PokemonMiniCard(name: item.name)
+              .task {
+                // if we're at the last pokemon, load more
+                if (viewModel.results.last == item) {
+                  await viewModel.search(loadMore: true)
+                }
+              }
           }
         }
       }
@@ -28,8 +34,11 @@ struct HomeView: View {
       .background(.background)
     }
     .searchable(text: $searchQuery, prompt: "Search")
-    .onAppear {
-      viewModel.search()
+    .task {
+      await viewModel.search()
+    }
+    .refreshable {
+      await viewModel.search()
     }
   }
 
