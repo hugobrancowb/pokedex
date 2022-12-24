@@ -12,9 +12,11 @@ extension Color {
   static let darkGray = Color("dark-gray")
   static let lightGray = Color("light-gray")
   static let mediumGray = Color("medium-gray")
-  static let white = Color("white")
-
-  // MARK: Colors per type
-  // TODO
+//  static let white = Color("white")
 }
 
+extension PokemonType {
+  func getColor() -> Color {
+    return Color("type-\(self)")
+  }
+}

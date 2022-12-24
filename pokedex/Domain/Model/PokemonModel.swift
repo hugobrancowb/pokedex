@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import SwiftUI
 
 struct PokemonCompactModel: Identifiable, Codable {
   let id: Int
@@ -49,10 +48,4 @@ enum PokemonType: String, Codable {
   case rock
   case steel
   case water
-}
-
-extension PokemonType {
-  func getColor() -> Color {
-    return Color("type-\(self)")
-  }
 }

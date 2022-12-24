@@ -40,10 +40,7 @@ struct PokemonMiniCard: View {
             .frame(maxWidth: .infinity, alignment: .trailing)
           
           // TODO: swap for async image with cache and shimmer as fallback
-          Image("Pokeball")
-            .resizable()
-            .aspectRatio(1, contentMode: .fit)
-            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
+          ImageCached(url: pokemon.sprites.front_default)
         }
         .padding(.top, 8)
         .padding(.horizontal, 8)
@@ -63,3 +60,15 @@ struct PokemonMiniCard: View {
     .aspectRatio(1, contentMode: .fit)
   }
 }
+
+struct PokemonMiniCard_Previews: PreviewProvider {
+  //  let pokemon = PokemonCompactModel(id: 1, name: "bulbasaur", sprites: SpriteModel(front_default: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png", back_default: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png"), types: [PokemonTypeModel(slot: 1, type: PokemonTypeModel.PokemonTypeDetails(name: PokemonType.grass, url: ""))])
+
+  static var previews: some View {
+    LazyVGrid(columns: [GridItem(), GridItem(), GridItem()], spacing: 16) {
+      PokemonMiniCard(pokemon: PokemonCompactModel(id: 1, name: "bulbasaur", sprites: SpriteModel(front_default: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png", back_default: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png"), types: [PokemonTypeModel(slot: 1, type: PokemonTypeModel.PokemonTypeDetails(name: PokemonType.grass, url: ""))]))
+    }
+    .padding()
+  }
+}
+
