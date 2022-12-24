@@ -7,29 +7,49 @@
 
 import Foundation
 
-struct PokemonCompactModel: Identifiable, Codable {
+struct PokemonCompactModel: Identifiable, Decodable {
   let id: Int
   let name: String
   let sprites: SpriteModel
   let types: [PokemonTypeModel]
 }
 
-struct SpriteModel: Codable {
+struct SpriteModel: Decodable {
   let front_default: String
   let back_default: String
+  let other: OtherSprites
+
+  var official: String { other.officialArtwork.frontDefault }
+
+
+  struct OtherSprites: Decodable {
+    let officialArtwork: OfficialArtwork
+
+    enum CodingKeys: String, CodingKey {
+      case officialArtwork = "official-artwork"
+    }
+
+    struct OfficialArtwork: Decodable {
+      let frontDefault: String
+
+      enum CodingKeys: String, CodingKey {
+        case frontDefault = "front_default"
+      }
+    }
+  }
 }
 
-struct PokemonTypeModel: Codable {
+struct PokemonTypeModel: Decodable {
   let slot: Int
   let type: PokemonTypeDetails
 
-  struct PokemonTypeDetails: Codable {
+  struct PokemonTypeDetails: Decodable {
     let name: PokemonType
     let url: String
   }
 }
 
-enum PokemonType: String, Codable {
+enum PokemonType: String, Decodable {
   case bug
   case dark
   case dragon

@@ -32,15 +32,16 @@ struct PokemonMiniCard: View {
             .strokeBorder(typeColor, lineWidth: 1)
         }
       
-      VStack {
+      VStack (spacing: 0) {
         ZStack(alignment: .topTrailing) {
           Text(hashId)
             .font(.pokereg(size: 8))
             .foregroundColor(typeColor)
             .frame(maxWidth: .infinity, alignment: .trailing)
+            .padding(.bottom, 4)
           
           // TODO: swap for async image with cache and shimmer as fallback
-          ImageCached(url: pokemon.sprites.front_default)
+          ImageCached(url: pokemon.sprites.official)
         }
         .padding(.top, 8)
         .padding(.horizontal, 8)
@@ -49,9 +50,9 @@ struct PokemonMiniCard: View {
           RoundedRectangle(cornerRadius: 0)
             .foregroundColor(typeColor)
             .frame(height: 24)
-          
-          Text(pokemon.name)
-            .font(.pokereg(size: 10))
+
+          Text(pokemon.name.capitalized)
+            .font(.caption)
             .foregroundColor(.white)
         }
       }
@@ -62,11 +63,12 @@ struct PokemonMiniCard: View {
 }
 
 struct PokemonMiniCard_Previews: PreviewProvider {
-  //  let pokemon = PokemonCompactModel(id: 1, name: "bulbasaur", sprites: SpriteModel(front_default: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png", back_default: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png"), types: [PokemonTypeModel(slot: 1, type: PokemonTypeModel.PokemonTypeDetails(name: PokemonType.grass, url: ""))])
-
   static var previews: some View {
     LazyVGrid(columns: [GridItem(), GridItem(), GridItem()], spacing: 16) {
-      PokemonMiniCard(pokemon: PokemonCompactModel(id: 1, name: "bulbasaur", sprites: SpriteModel(front_default: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png", back_default: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png"), types: [PokemonTypeModel(slot: 1, type: PokemonTypeModel.PokemonTypeDetails(name: PokemonType.grass, url: ""))]))
+      PokemonMiniCard(pokemon: PokemonCompactModel(id: 1, name: "bulbasaur", sprites: SpriteModel(front_default: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png", back_default: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png",
+                                                                                                  other: SpriteModel.OtherSprites(officialArtwork: SpriteModel.OtherSprites.OfficialArtwork(
+                                                                                                    frontDefault: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/1.png")
+                                                                                                  )                  ), types: [PokemonTypeModel(slot: 1, type: PokemonTypeModel.PokemonTypeDetails(name: PokemonType.grass, url: ""))]))
     }
     .padding()
   }

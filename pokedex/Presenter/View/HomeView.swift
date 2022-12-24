@@ -16,16 +16,31 @@ struct HomeView: View {
     NavigationView {
       ScrollView {
         // MARK: Grid of PokeCard
-        LazyVGrid(columns: [GridItem(), GridItem(), GridItem()], spacing: 16) {
-          ForEach(viewModel.results, id: \.name) { pokemon in
-            PokemonMiniCard(pokemon: pokemon)
-              .task {
-                // if we're at the last pokemon, load more
-                if (viewModel.results.last?.id == pokemon.id) {
-                  await viewModel.search(loadMore: true)
+        switch viewModel.state {
+        case .data:
+          LazyVGrid(columns: [GridItem(), GridItem(), GridItem()], spacing: 8) {
+            ForEach(viewModel.results, id: \.name) { pokemon in
+              PokemonMiniCard(pokemon: pokemon)
+                .task {
+                  // if we're at the last pokemon, load more
+                  if (viewModel.results.last?.id == pokemon.id) {
+                    await viewModel.search(loadMore: true)
+                  }
                 }
-              }
+            }
           }
+
+        case .loading:
+          ProgressView()
+
+        case .error:
+          HStack (spacing: 8) {
+            Image(systemName: "xmark.circle")
+
+            Text("Error fetching pokemons")
+              .font(.body)
+          }
+          .foregroundColor(.red)
         }
       }
       .padding()
