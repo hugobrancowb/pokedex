@@ -17,14 +17,14 @@ struct HomeView: View {
       ScrollView {
         // MARK: Grid of PokeCard
         switch viewModel.state {
-        case .data:
+        case .data(let data):
           LazyVGrid(columns: [GridItem(), GridItem(), GridItem()], spacing: 8) {
-            ForEach(viewModel.results, id: \.name) { pokemon in
+            ForEach(data, id: \.name) { pokemon in
               PokemonMiniCard(pokemon: pokemon)
                 .task {
                   // if we're at the last pokemon, load more
-                  if (viewModel.results.last?.id == pokemon.id) {
-                    await viewModel.search(loadMore: true)
+                  if (data.last?.id == pokemon.id) {
+                    viewModel.search(loadMore: true)
                   }
                 }
             }
@@ -34,29 +34,35 @@ struct HomeView: View {
           ProgressView()
 
         case .error:
-          HStack (spacing: 8) {
-            Image(systemName: "xmark.circle")
-
-            Text("Error fetching pokemons")
-              .font(.body)
-          }
-          .foregroundColor(.red)
+          ErrorLoading()
         }
       }
       .padding()
       .frame(maxWidth: .infinity, maxHeight: .infinity)
+      // TODO: swap search bar for generation toggles or maybe other kinds of filters
       .homeToolbar()
       .background(.background)
     }
     .searchable(text: $searchQuery, prompt: "Search")
     .task {
-      await viewModel.search()
+      viewModel.search()
     }
     .refreshable {
-      await viewModel.search()
+      viewModel.search()
     }
   }
 
+  private struct ErrorLoading: View {
+    var body: some View {
+      HStack (spacing: 8) {
+        Image(systemName: "xmark.circle")
+
+        Text("Error fetching pokemons")
+          .font(.body)
+      }
+      .foregroundColor(.red)
+    }
+  }
 }
 
 struct HomeView_Previews: PreviewProvider {

@@ -24,16 +24,15 @@ class Service {
 
     group.enter()
     for pokemon in results.results {
-      searchDetails(name: pokemon.name) { result in
-        switch result {
-        case .success(let pokemon):
-          pokemonDetailList.append(pokemon)
-          if pokemonDetailList.count == results.results.count { group.leave() }
-        case .failure(let error):
-          print(error)
-          completion(.failure(error))
-          group.leave()
-        }
+      let result = await searchDetails(name: pokemon.name)
+      switch result {
+      case .success(let pokemon):
+        pokemonDetailList.append(pokemon)
+        if pokemonDetailList.count == results.results.count { group.leave() }
+      case .failure(let error):
+        print(error)
+        completion(.failure(error))
+        group.leave()
       }
     }
 
@@ -42,23 +41,16 @@ class Service {
     }
   }
 
-  static private func searchDetails(name: String, _ handler: @escaping (Result<PokemonCompactModel, ServiceError>) -> Void) -> Void {
+  static private func searchDetails(name: String) async -> Result<PokemonCompactModel, ServiceError> {
     let url = URL(string: "https://pokeapi.co/api/v2/pokemon/\(name)")!
-    let task = URLSession.shared.dataTask(with: url) { data, response, error in
-      guard let data = data, error == nil else { return }
 
-      do {
-        let result = try JSONDecoder().decode(PokemonCompactModel.self, from: data)
-        handler(.success(result))
-      }
-      catch {
-        print(error)
-        handler(.failure(ServiceError.decodingError))
-        return
-      }
-    }
+    guard let (data, _) = try? await URLSession.shared.data(from: url)
+    else { return .failure(ServiceError.fetchingError) }
 
-    task.resume()
+    guard let result = try? JSONDecoder().decode(PokemonCompactModel.self, from: data)
+    else { return .failure(ServiceError.decodingError) }
+
+    return .success(result)
   }
 }
 
