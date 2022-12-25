@@ -8,8 +8,10 @@
 import SwiftUI
 
 struct PokemonMiniCard: View {
+  /// Pokemon information
   let pokemon: PokemonCompactModel
-  
+
+  /// Pokemon number prefixed with # and always having 3 digits
   var hashId: String {
     let number = pokemon.id.description
     return "#"
@@ -39,8 +41,7 @@ struct PokemonMiniCard: View {
             .foregroundColor(typeColor)
             .frame(maxWidth: .infinity, alignment: .trailing)
             .padding(.bottom, 4)
-          
-          // TODO: swap for async image with cache and shimmer as fallback
+
           ImageCached(url: pokemon.sprites.official)
         }
         .padding(.top, 8)
