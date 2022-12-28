@@ -41,8 +41,10 @@ struct HomeView: View {
       .frame(maxWidth: .infinity, maxHeight: .infinity)
       // TODO: swap search bar for generation toggles or maybe other kinds of filters
       .homeToolbar()
+      .navigationBarTitleDisplayMode(.inline)
       .background(.background)
     }
+    .preferredColorScheme(.light)
     .searchable(text: $searchQuery, prompt: "Search")
     .task {
       viewModel.search()
