@@ -18,8 +18,8 @@ struct PokemonCompactModel: Identifiable, Decodable {
 }
 
 struct SpriteModel: Decodable {
-  let front_default: String
-  let back_default: String
+  let front_default: String?
+  let back_default: String?
   private let other: OtherSprites
   
   var official: String { other.officialArtwork.frontDefault }

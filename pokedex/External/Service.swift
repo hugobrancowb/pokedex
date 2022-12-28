@@ -47,10 +47,13 @@ class Service {
     guard let (data, _) = try? await URLSession.shared.data(from: url)
     else { return .failure(ServiceError.fetchingError) }
 
-    guard let result = try? JSONDecoder().decode(PokemonCompactModel.self, from: data)
-    else { return .failure(ServiceError.decodingError) }
-
-    return .success(result)
+    do {
+      let result = try JSONDecoder().decode(PokemonCompactModel.self, from: data)
+      return .success(result)
+    } catch {
+      print(error)
+      return .failure(ServiceError.decodingError)
+    }
   }
 }
 

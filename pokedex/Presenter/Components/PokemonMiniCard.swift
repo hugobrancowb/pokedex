@@ -15,7 +15,7 @@ struct PokemonMiniCard: View {
   var hashId: String {
     let number = pokemon.id.description
     return "#"
-      .appending(repeatElement("0", count: 3 - number.count).joined())
+      .appending(repeatElement("0", count: number.count < 3 ? 3 - number.count : 0).joined())
       .appending(number)
   }
   

@@ -40,7 +40,7 @@ struct HomeView: View {
       .padding()
       .frame(maxWidth: .infinity, maxHeight: .infinity)
       // TODO: swap search bar for generation toggles or maybe other kinds of filters
-      .homeToolbar()
+      .homeToolbar(selectedGen: viewModel.selectedGen, onFilterChange: viewModel.onFilterChange)
       .navigationBarTitleDisplayMode(.inline)
       .background(.background)
     }
